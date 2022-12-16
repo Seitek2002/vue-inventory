@@ -33,12 +33,16 @@
           <img :src="drawerInfo.imgUrl" alt="" />
         </div>
         <div class="drawer__details">
-          <h2 class="drawer__title">{{drawerInfo.name}}</h2>
+          <h2 class="drawer__title">{{ drawerInfo.name }}</h2>
           <p class="drawer__description">
-            {{drawerInfo.description}}
+            {{ drawerInfo.description }}
           </p>
         </div>
-        <button v-if="!isFooterActive" @click="isFooterActive = !isFooterActive" class="drawer__remove">
+        <button
+          v-if="!isFooterActive"
+          @click="isFooterActive = !isFooterActive"
+          class="drawer__remove"
+        >
           Удалить предмет
         </button>
       </div>
@@ -48,10 +52,25 @@
             class="drawer__input"
             placeholder="Введите количество"
             type="text"
+            @input="validateInput"
           />
           <div class="drawer__btns">
-            <button @click="isFooterActive = !isFooterActive" class="drawer__cancel-btn">Отмена</button>
-            <button class="drawer__approve-btn">Подтвердить</button>
+            <button
+              @click="isFooterActive = !isFooterActive"
+              class="drawer__cancel-btn"
+            >
+              Отмена
+            </button>
+            <button
+              v-if="deletedCounter"
+              @click="deleteItem(drawerInfo)"
+              class="drawer__approve-btn"
+            >
+              Подтвердить
+            </button>
+            <button v-else disabled class="drawer__approve-btn">
+              Подтвердить
+            </button>
           </div>
         </div>
       </div>
@@ -65,19 +84,35 @@ export default {
   setup() {
     const isDrawerOpen = ref(false);
     const isFooterActive = ref(false);
+    const deleteInputValue = ref("");
 
     const drawerInfo = ref(null);
 
     const setDrawerInfo = (data) => {
-        drawerInfo.value = data;
-        isDrawerOpen.value = !isDrawerOpen.value;
-    }
+      drawerInfo.value = data;
+      isDrawerOpen.value = !isDrawerOpen.value;
+    };
+
+    const deleteItem = (item) => {
+      console.log(item);
+    };
+
+    const validateInput = (e) => {
+      if (Number(e.target.value) || e.target.value == 0) {
+        deleteInputValue.value = e.target.value;
+      } else {
+        e.target.value = deleteInputValue.value
+      }
+    };
 
     return {
       isDrawerOpen,
       isFooterActive,
       drawerInfo,
-      setDrawerInfo
+      setDrawerInfo,
+      deleteItem,
+      validateInput,
+      deleteInputValue,
     };
   },
 };
@@ -243,6 +278,10 @@ export default {
     color: #fff;
     font-size: 14px;
     cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+    }
   }
 
   &__input {
@@ -253,6 +292,8 @@ export default {
     font-size: 14px;
     padding: 12px;
     box-sizing: border-box;
+    text-rendering: none !important;
+    appearance: none;
   }
 }
 </style>
