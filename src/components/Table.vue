@@ -1,13 +1,23 @@
 <template>
-  <div class="table">
+  <div @drop="store.commit('swapElements', $event)" class="table">
     <div
       class="table__row"
-      v-for="(row, rowIndex) in $store.state.items"
+      @dragenter.prevent
+      @dragover.prevent
+      v-for="(row, rowIndex) in store.state.items"
       :key="rowIndex"
     >
-      <div class="table__cell" v-for="(item, colIndex) in row" :key="colIndex">
+      <div
+        draggable="true"
+        @dragstart="store.commit('setPosition', $event)"
+        class="table__cell"
+        :data-row="rowIndex"
+        :data-col="colIndex"
+        v-for="(item, colIndex) in row"
+        :key="colIndex"
+      >
         <div @click="setDrawerInfo(item)" v-if="item.name" class="table__item">
-          <img :src="item.imgUrl" alt="" />
+          <img draggable="false" :src="item.imgUrl" alt="" />
           <div class="table__item-counter">{{ item.counter }}</div>
         </div>
       </div>
@@ -80,8 +90,10 @@
 
 <script>
 import { ref } from "@vue/reactivity";
+import { useStore } from "vuex";
 export default {
   setup() {
+    const store = useStore();
     const isDrawerOpen = ref(false);
     const isFooterActive = ref(false);
     const deleteInputValue = ref("");
@@ -101,7 +113,7 @@ export default {
       if (Number(e.target.value) || e.target.value == 0) {
         deleteInputValue.value = e.target.value;
       } else {
-        e.target.value = deleteInputValue.value
+        e.target.value = deleteInputValue.value;
       }
     };
 
@@ -113,6 +125,7 @@ export default {
       deleteItem,
       validateInput,
       deleteInputValue,
+      store,
     };
   },
 };

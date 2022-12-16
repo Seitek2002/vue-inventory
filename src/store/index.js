@@ -47,9 +47,26 @@ export default createStore({
       [{}, {}, {}, {}, {}],
       [{}, {}, {}, {}, {}],
     ],
+    i: null,
+    j: null,
+    k: null,
+    l: null,
   },
   getters: {},
-  mutations: {},
+  mutations: {
+    setPosition(state, event) {
+      state.i = event.toElement.dataset.row;
+      state.j = event.toElement.dataset.col;
+    },
+    swapElements(state, event) {
+      state.k = event.toElement.dataset.row;
+      state.l = event.toElement.dataset.col;
+
+      let temp = state.items[state.i][state.j];
+      state.items[state.i][state.j] = state.items[state.k][state.l];
+      state.items[state.k][state.l] = temp;
+    },
+  },
   actions: {},
   modules: {},
 });
