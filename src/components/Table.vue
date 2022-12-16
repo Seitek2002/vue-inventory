@@ -2,16 +2,16 @@
   <div class="table">
     <div
       class="table__row"
-      v-for="(row, rowIndex) in Array(5)"
+      v-for="(row, rowIndex) in $store.state.items"
       :key="rowIndex"
     >
       <div
         class="table__cell"
-        v-for="(item, colIndex) in Array(5)"
+        v-for="(item, colIndex) in row"
         :key="colIndex"
       >
-        <div v-if="item" class="table__item">
-          <img src="" alt="" />
+        <div v-if="item.name" class="table__item">
+          <img :src="item.imgUrl" alt="" />
           <div class="table__item-counter">{{ item.counter }}</div>
         </div>
       </div>
