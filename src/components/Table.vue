@@ -6,7 +6,7 @@
       :key="rowIndex"
     >
       <div class="table__cell" v-for="(item, colIndex) in row" :key="colIndex">
-        <div @click="isDrawerOpen = !isDrawerOpen" v-if="item.name" class="table__item">
+        <div @click="setDrawerInfo(item)" v-if="item.name" class="table__item">
           <img :src="item.imgUrl" alt="" />
           <div class="table__item-counter">{{ item.counter }}</div>
         </div>
@@ -30,16 +30,12 @@
           </svg>
         </div>
         <div class="drawer__img">
-          <img src="/img/Sword.png" alt="" />
+          <img :src="drawerInfo.imgUrl" alt="" />
         </div>
         <div class="drawer__details">
-          <h2 class="drawer__title">Sword</h2>
+          <h2 class="drawer__title">{{drawerInfo.name}}</h2>
           <p class="drawer__description">
-            Swords are weapons that are primarily used to kill mobs or other
-            players quicker than punching them with bare hands. They also remove
-            some blocks faster than using a player's bare hands (such as leaves,
-            vines, melons, and cobwebs). Each broken block counts as two uses on
-            the sword's durability when used in this way.
+            {{drawerInfo.description}}
           </p>
         </div>
         <button v-if="!isFooterActive" @click="isFooterActive = !isFooterActive" class="drawer__remove">
@@ -67,12 +63,21 @@
 import { ref } from "@vue/reactivity";
 export default {
   setup() {
-    const isDrawerOpen = ref(true);
-    const isFooterActive = ref(true);
+    const isDrawerOpen = ref(false);
+    const isFooterActive = ref(false);
+
+    const drawerInfo = ref(null);
+
+    const setDrawerInfo = (data) => {
+        drawerInfo.value = data;
+        isDrawerOpen.value = !isDrawerOpen.value;
+    }
 
     return {
       isDrawerOpen,
       isFooterActive,
+      drawerInfo,
+      setDrawerInfo
     };
   },
 };
