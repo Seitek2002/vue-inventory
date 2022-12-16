@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <img src="" alt="" />
+    <img src="/img/avatar.png" alt="" />
     <h2 class="sidebar__title bg-blur"></h2>
     <p class="sidebar__stroke bg-blur long"></p>
     <p class="sidebar__stroke bg-blur short"></p>
