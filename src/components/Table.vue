@@ -62,7 +62,7 @@
               Отмена
             </button>
             <button
-              v-if="deletedCounter"
+              v-if="deleteInputValue"
               @click="deleteItem(drawerInfo)"
               class="drawer__approve-btn"
             >
