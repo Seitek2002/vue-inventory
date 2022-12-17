@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate"
 
 export default createStore({
   state: {
@@ -53,6 +54,7 @@ export default createStore({
     l: null,
   },
   getters: {},
+  plugins: [createPersistedState()],
   mutations: {
     setPosition(state, event) {
       state.i = event.toElement.dataset.row;
