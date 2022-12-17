@@ -70,7 +70,6 @@ export default createStore({
     },
     decreaseCounter(state, data) {
       state.items[data.row][data.col].counter -= data.deleteCounter;
-      console.log(state.items[data.row][data.col]);
     }
   },
   actions: {},
