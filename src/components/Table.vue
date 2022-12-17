@@ -16,7 +16,11 @@
         v-for="(item, colIndex) in row"
         :key="colIndex"
       >
-        <div @click="setDrawerInfo(item)" v-if="item.name" class="table__item">
+        <div
+          @click="setDrawerInfo({ ...item, row: rowIndex, col: colIndex })"
+          v-if="item.name"
+          class="table__item"
+        >
           <img draggable="false" :src="item.imgUrl" alt="" />
           <div class="table__item-counter">{{ item.counter }}</div>
         </div>
@@ -50,7 +54,7 @@
         </div>
         <button
           v-if="!isFooterActive"
-          @click="isFooterActive = !isFooterActive"
+          @click="isFooterActive = !isFooterActive; err = null"
           class="drawer__remove"
         >
           Удалить предмет
@@ -58,6 +62,7 @@
       </div>
       <div class="drawer__footer">
         <div v-if="isFooterActive" class="drawer__edit">
+          <p class="drawer__warning" v-if="err">{{ err }}</p>
           <input
             class="drawer__input"
             placeholder="Введите количество"
@@ -97,6 +102,7 @@ export default {
     const isDrawerOpen = ref(false);
     const isFooterActive = ref(false);
     const deleteInputValue = ref("");
+    const err = ref(null);
 
     const drawerInfo = ref(null);
 
@@ -106,7 +112,11 @@ export default {
     };
 
     const deleteItem = (item) => {
-      console.log(item);
+      if (+deleteInputValue.value > +item.counter) {
+        err.value = "Вы превысили кол-во предметов";
+      } else {
+        store.commit("decreaseCounter", {...item, deleteCounter: +deleteInputValue.value});
+      }
     };
 
     const validateInput = (e) => {
@@ -126,6 +136,7 @@ export default {
       validateInput,
       deleteInputValue,
       store,
+      err,
     };
   },
 };
@@ -192,7 +203,7 @@ export default {
     background: rgba(38, 38, 38, 0.5);
     border-left: 1px solid #4d4d4d;
     backdrop-filter: blur(8px);
-    width: 250px;
+    width: 260px;
     height: 500px;
     padding: 15px;
     box-sizing: border-box;
@@ -307,6 +318,13 @@ export default {
     box-sizing: border-box;
     text-rendering: none !important;
     appearance: none;
+  }
+
+  &__warning {
+    color: #ccc;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 25px;
   }
 }
 </style>

@@ -68,6 +68,10 @@ export default createStore({
       state.items[state.i][state.j] = state.items[state.k][state.l];
       state.items[state.k][state.l] = temp;
     },
+    decreaseCounter(state, data) {
+      state.items[data.row][data.col].counter -= data.deleteCounter;
+      console.log(state.items[data.row][data.col]);
+    }
   },
   actions: {},
   modules: {},
